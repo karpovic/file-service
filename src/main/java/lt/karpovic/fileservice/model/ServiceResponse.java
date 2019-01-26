@@ -44,4 +44,12 @@ public class ServiceResponse {
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
     }
+
+    public static ServiceResponse getSuccessStatus() {
+        return new ServiceResponse(ResponseStatusEnum.COMPLETED_SUCCESS, ResponseStatusEnum.COMPLETED_SUCCESS.getStatusCode());
+    }
+
+    public static ServiceResponse getNotSuccessStatus() {
+        return new ServiceResponse(ResponseStatusEnum.CLIENT_ERROR, ResponseStatusEnum.CLIENT_ERROR.getStatusCode());
+    }
 }
