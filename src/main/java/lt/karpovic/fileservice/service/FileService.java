@@ -26,4 +26,33 @@ public interface FileService {
      * @return
      */
     ServiceResponse resetSystem();
+
+    /**
+     * return words from 1 interval by AppConfig.WORDS_1
+     *
+     * @return
+     */
+    ServiceResponse getWordsByInterval1();
+
+    /**
+     * return words from 2 interval by AppConfig.WORDS_2
+     *
+     * @return
+     */
+    ServiceResponse getWordsByInterval2();
+
+    /**
+     * return words from 3 interval by AppConfig.WORDS_3
+     *
+     * @return
+     */
+    ServiceResponse getWordsByInterval3();
+
+    /**
+     * return words from 4 interval by AppConfig.WORDS_4
+     *
+     * @return
+     */
+    ServiceResponse getWordsByInterval4();
+
 }

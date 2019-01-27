@@ -32,7 +32,25 @@ public class FileController {
         return fileService.resetSystem();
     }
 
+    @GetMapping(value = "/getWordsByInterval1")
+    public ServiceResponse getWordsByInterval1() {
+        return fileService.getWordsByInterval1();
+    }
 
+    @GetMapping(value = "/getWordsByInterval2")
+    public ServiceResponse getWordsByInterval2() {
+        return fileService.getWordsByInterval2();
+    }
+
+    @GetMapping(value = "/getWordsByInterval3")
+    public ServiceResponse getWordsByInterval3() {
+        return fileService.getWordsByInterval3();
+    }
+
+    @GetMapping(value = "/getWordsByInterval4")
+    public ServiceResponse getWordsByInterval4() {
+        return fileService.getWordsByInterval4();
+    }
 
 
 }
