@@ -22,10 +22,17 @@ public class FileController {
         return fileService.uploadFile(file);
     }
 
-    @GetMapping(value = "/getNumberOfFiles")
-    public ServiceResponse getNumberOfFiles() {
-        return fileService.getNumberOfFiles();
+    @GetMapping(value = "/getStatus")
+    public ServiceResponse getStatus() {
+        return fileService.getStatus();
     }
+
+    @PostMapping(value = "/resetSystem")
+    public ServiceResponse resetSystem() {
+        return fileService.resetSystem();
+    }
+
+
 
 
 }

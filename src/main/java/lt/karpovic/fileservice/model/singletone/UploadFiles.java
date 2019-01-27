@@ -1,13 +1,17 @@
 package lt.karpovic.fileservice.model.singletone;
 
-import org.springframework.web.multipart.MultipartFile;
+import lt.karpovic.fileservice.model.Word;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public class UploadFiles {
     private static UploadFiles instance;
-    private List<MultipartFile> files = new ArrayList<>();
+    private List<String> filesName = new ArrayList<>();
+
+    private Map<String, Word> wordsMap = new ConcurrentSkipListMap<>();
 
     private UploadFiles() {
     }
@@ -19,17 +23,29 @@ public class UploadFiles {
         return instance;
     }
 
-    public void addFile(MultipartFile file) {
-        if (file != null) {
-            files.add(file);
+    public static void reset() {
+        instance = null;
+    }
+
+    public void addFileNameToList(String fileName) {
+        if (fileName != null) {
+            filesName.add(fileName);
         }
     }
 
-    public List<MultipartFile> getFiles() {
-        return files;
+    public int getNumberOfFiles() {
+        return filesName.size();
     }
 
-    public int getNumberOfFiles() {
-        return files.size();
+    public Map<String, Word> getWordsMap() {
+        return wordsMap;
+    }
+
+    public void addWord(Word word) {
+        wordsMap.put(word.getWordValue(), word);
+    }
+
+    public int getNumberOfWords() {
+        return wordsMap.size();
     }
 }
