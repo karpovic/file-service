@@ -1,6 +1,6 @@
 # file-service
 Service provide rest API for work with files.
-There is an option to upload files as many as you need. Service will process files count all words and split it in four files by letters intervals (A-G, H-N, O-U, V-Z).
+There is an option to upload files as many as you need. Service will process files, count all words and split it in four files by letters intervals (A-G, H-N, O-U, V-Z).
 
 # services
 
