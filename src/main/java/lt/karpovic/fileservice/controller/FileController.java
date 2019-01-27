@@ -3,6 +3,8 @@ package lt.karpovic.fileservice.controller;
 import lt.karpovic.fileservice.model.ServiceResponse;
 import lt.karpovic.fileservice.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,6 +53,12 @@ public class FileController {
     public ServiceResponse getWordsByInterval4() {
         return fileService.getWordsByInterval4();
     }
+
+    @GetMapping(value = "/getFileByIntervalNumber")
+    public ResponseEntity<InputStreamResource> getFileByIntervalNumber(@RequestParam("intervalNumber") int intervalNumber) {
+        return fileService.getFileByIntervalNumber(intervalNumber);
+    }
+
 
 
 }
