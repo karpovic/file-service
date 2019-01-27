@@ -37,4 +37,17 @@ public class ValidatorTest {
 
     }
 
+    @Test
+    public void validateIntervalNumberTest() {
+        String result = Validator.validateIntervalNumber(0);
+        Assert.assertEquals(String.format(MsgConst.VALIDATION_NOT_SUPPORTED_INTERVAL_NUMBER, AppConfig.MIN_PART_NUMBER, AppConfig.MAX_PART_NUMBER), result);
+        result = Validator.validateIntervalNumber(10);
+        Assert.assertEquals(String.format(MsgConst.VALIDATION_NOT_SUPPORTED_INTERVAL_NUMBER, AppConfig.MIN_PART_NUMBER, AppConfig.MAX_PART_NUMBER), result);
+
+        result = Validator.validateIntervalNumber(AppConfig.MIN_PART_NUMBER);
+        Assert.assertEquals("", result);
+        result = Validator.validateIntervalNumber(AppConfig.MAX_PART_NUMBER);
+        Assert.assertEquals("", result);
+    }
+
 }

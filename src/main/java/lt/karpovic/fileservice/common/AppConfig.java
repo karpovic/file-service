@@ -7,6 +7,8 @@ public class AppConfig {
 
     public static final String FILE_ENCODING = "UTF-8";
 
+    public static final String ATTACHMENT_HEADER = "attachment;filename=";
+
     public static final String REG_EX_FOR_SPLITTING_WORDS = "\\s+";
 
     public static final String REG_EX_FOR_LEAVE_ONLY_LETTERS = "[^a-zA-Z]+";
@@ -17,7 +19,13 @@ public class AppConfig {
 
     public static final String SPLIT_WORDS = "; ";
 
+    public static final String SPLIT_WORDS_NEW_LINE = System.getProperty("line.separator");
+
     public static final String SPLIT_SYMBOL = "-";
+
+    public static final String FILE_NAME_PREFIX = "file_";
+
+    public static final String FILE_EXTENSION_SPLIT = ".";
 
     public static final char START_1 = 'a';
     public static final char END_1 = 'g';
@@ -34,6 +42,9 @@ public class AppConfig {
     public static final char START_4 = 'v';
     public static final char END_4 = 'z';
     public static final String WORDS_4 = START_4 + SPLIT_SYMBOL + END_4;
+
+    public static final int MIN_PART_NUMBER = 1;
+    public static final int MAX_PART_NUMBER = 4;
 
     private AppConfig() {
         throw new IllegalStateException(MsgConst.UTILITY_CLASS);

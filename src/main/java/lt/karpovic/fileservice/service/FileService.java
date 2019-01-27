@@ -1,6 +1,8 @@
 package lt.karpovic.fileservice.service;
 
 import lt.karpovic.fileservice.model.ServiceResponse;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
@@ -54,5 +56,13 @@ public interface FileService {
      * @return
      */
     ServiceResponse getWordsByInterval4();
+
+    /**
+     * method will return file by provided interval number
+     *
+     * @param intervalNumber
+     * @return
+     */
+    ResponseEntity<InputStreamResource> getFileByIntervalNumber(int intervalNumber);
 
 }

@@ -8,9 +8,15 @@ import lt.karpovic.fileservice.model.Word;
 import lt.karpovic.fileservice.model.singletone.UploadFiles;
 import lt.karpovic.fileservice.service.FileService;
 import org.apache.log4j.Logger;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.Executor;
@@ -83,10 +89,61 @@ public class FileServiceImpl implements FileService {
         return response;
     }
 
+    @Override
+    public ResponseEntity<InputStreamResource> getFileByIntervalNumber(int intervalNumber) {
+        String validateMsg = Validator.validateIntervalNumber(intervalNumber);
+        ResponseEntity response = null;
+        if (validateMsg.isEmpty()) {
+            response = getInputStreamResourceResponseEntity(getWordPartByIntervalNumber(intervalNumber));
+        } else {
+            response = ResponseEntity.status(HttpStatus.FORBIDDEN).body(validateMsg);
+        }
+        return response;
+    }
+
+    private String getWordPartByIntervalNumber(int intervalNumber) {
+        String wordPart = "";
+        switch (intervalNumber) {
+            case 1:
+                wordPart = AppConfig.WORDS_1;
+                break;
+            case 2:
+                wordPart = AppConfig.WORDS_2;
+                break;
+            case 3:
+                wordPart = AppConfig.WORDS_3;
+                break;
+            case 4:
+                wordPart = AppConfig.WORDS_4;
+                break;
+            default:
+                wordPart = "";
+                break;
+        }
+        return wordPart;
+    }
+
+    private ResponseEntity<InputStreamResource> getInputStreamResourceResponseEntity(String wordPart) {
+        String content = getWordList(wordPart, true);
+        InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(content.getBytes()));
+        String fileName = AppConfig.FILE_NAME_PREFIX + wordPart + AppConfig.FILE_EXTENSION_SPLIT + AppConfig.TXT_FILE_EXTENSION;
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, AppConfig.ATTACHMENT_HEADER + fileName)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(resource);
+    }
+
     private String getWordList(String wordPart) {
+        return getWordList(wordPart, false);
+    }
+
+    private String getWordList(String wordPart, boolean splitByNewLine) {
         StringBuilder result = new StringBuilder();
-        for (Word word : UploadFiles.getInstance().getPartWordsMap(wordPart).values()) {
-            result.append(word.getWordValue()).append(AppConfig.SYMBOL_FOR_SEPARATE_WORD_AND_NUMBER).append(word.getCounter()).append(AppConfig.SPLIT_WORDS);
+        if (wordPart != null && !wordPart.isEmpty()) {
+            for (Word word : UploadFiles.getInstance().getPartWordsMap(wordPart).values()) {
+                result.append(word.getWordValue()).append(AppConfig.SYMBOL_FOR_SEPARATE_WORD_AND_NUMBER).append(word.getCounter())
+                        .append(splitByNewLine ? AppConfig.SPLIT_WORDS_NEW_LINE : AppConfig.SPLIT_WORDS);
+            }
         }
         return result.toString();
     }
