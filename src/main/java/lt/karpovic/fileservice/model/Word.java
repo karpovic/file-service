@@ -1,10 +1,12 @@
 package lt.karpovic.fileservice.model;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Word {
 
     String wordValue;
 
-    int counter = 0;
+    AtomicInteger counter = new AtomicInteger(0);
 
     public Word(String wordValue) {
         this.wordValue = wordValue;
@@ -15,15 +17,11 @@ public class Word {
         return wordValue;
     }
 
-    public void setWordValue(String wordValue) {
-        this.wordValue = wordValue;
-    }
-
     public int getCounter() {
-        return counter;
+        return counter.get();
     }
 
     public void incrementCounter() {
-        this.counter++;
+        counter.incrementAndGet();
     }
 }
