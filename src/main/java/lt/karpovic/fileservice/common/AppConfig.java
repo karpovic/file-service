@@ -19,7 +19,7 @@ public class AppConfig {
 
     public static final String SPLIT_WORDS = "; ";
 
-    public static final String SPLIT_WORDS_NEW_LINE = System.lineSeparator();
+    public static final String SPLIT_WORDS_NEW_LINE = "; " + System.lineSeparator();
 
     public static final String SPLIT_SYMBOL = "-";
 
