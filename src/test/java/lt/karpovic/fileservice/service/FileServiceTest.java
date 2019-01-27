@@ -4,7 +4,6 @@ import lt.karpovic.fileservice.common.AppConfig;
 import lt.karpovic.fileservice.common.MsgConst;
 import lt.karpovic.fileservice.common.ResponseStatusEnum;
 import lt.karpovic.fileservice.model.ServiceResponse;
-import lt.karpovic.fileservice.model.Word;
 import lt.karpovic.fileservice.model.singletone.UploadFiles;
 import lt.karpovic.fileservice.service.impl.FileServiceImpl;
 import org.junit.Assert;
@@ -57,7 +56,16 @@ public class FileServiceTest {
 
         String word = "aliquam";
         int wordCnt = 2;
-        Assert.assertEquals(wordCnt, UploadFiles.getInstance().getWordsMap().get(word).getCounter());
+        Assert.assertEquals(wordCnt, UploadFiles.getInstance().getWordsMap().get(AppConfig.WORDS_1).get(word).getCounter());
+
+        int wordPart1Size = 54;
+        Assert.assertEquals(wordPart1Size, UploadFiles.getInstance().getWordsMap().get(AppConfig.WORDS_1).size());
+        int wordPart2Size = 40;
+        Assert.assertEquals(wordPart2Size, UploadFiles.getInstance().getWordsMap().get(AppConfig.WORDS_2).size());
+        int wordPart3Size = 41;
+        Assert.assertEquals(wordPart3Size, UploadFiles.getInstance().getWordsMap().get(AppConfig.WORDS_3).size());
+        int wordPart4Size = 11;
+        Assert.assertEquals(wordPart4Size, UploadFiles.getInstance().getWordsMap().get(AppConfig.WORDS_4).size());
 
         inputstream = getClass().getClassLoader().getResourceAsStream(FILE_NAME_CSV);
         Assert.assertNotNull(inputstream);
@@ -86,7 +94,7 @@ public class FileServiceTest {
         int numberOfFile = 1;
         Assert.assertEquals(numberOfFile, UploadFiles.getInstance().getNumberOfFiles());
         String word = "a";
-        UploadFiles.getInstance().addWord(new Word(word));
+        UploadFiles.getInstance().processWord(word);
         int numberOfWords = 1;
         Assert.assertEquals(numberOfWords, UploadFiles.getInstance().getNumberOfWords());
     }
