@@ -14,9 +14,16 @@ public interface FileService {
     ServiceResponse uploadFile(MultipartFile file);
 
     /**
-     * method will check number of uploaded files in UploadFile.class and return response message with number
+     * method will return number of loaded files and number of words
      *
      * @return
      */
-    ServiceResponse getNumberOfFiles();
+    ServiceResponse getStatus();
+
+    /**
+     * method will reset uploaded files and found words
+     *
+     * @return
+     */
+    ServiceResponse resetSystem();
 }
