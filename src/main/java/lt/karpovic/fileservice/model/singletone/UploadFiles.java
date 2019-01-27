@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 public class UploadFiles {
     private static UploadFiles instance;
-    private List<String> filesName = new ArrayList<>();
+    private List<String> filesName = Collections.synchronizedList(new ArrayList<>());
 
     private Map<String, Map<String, Word>> wordsMap = new ConcurrentSkipListMap<>();
 
