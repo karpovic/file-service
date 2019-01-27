@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface FileService {
 
     /**
-     * method will validate upload file and add to UploadFile.class uploaded file list
+     * method will validate upload file and process in thread uploaded file
      *
      * @param file
      * @return

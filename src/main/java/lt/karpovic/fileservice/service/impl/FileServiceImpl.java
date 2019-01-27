@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -21,13 +23,12 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public ServiceResponse uploadFile(MultipartFile file) {
-        ServiceResponse response = null;
+        ServiceResponse response = ServiceResponse.getSuccessStatus();
         String validation = Validator.validateInputFile(file);
         if (validation.isEmpty()) {
             UploadFiles.getInstance().addFileNameToList(file.getOriginalFilename());
-
-            response = processUploadedFile(file);
-
+            Executor executor = Executors.newSingleThreadExecutor();
+            executor.execute(() -> processUploadedFile(file));
         } else {
             response = ServiceResponse.getNotSuccessStatus();
             response.setResponseMsg(validation);
@@ -91,8 +92,7 @@ public class FileServiceImpl implements FileService {
     }
 
 
-    private ServiceResponse processUploadedFile(MultipartFile file) {
-        ServiceResponse response = ServiceResponse.getSuccessStatus();
+    private void processUploadedFile(MultipartFile file) {
         try (Scanner sc = new Scanner(file.getInputStream(), AppConfig.FILE_ENCODING)) {
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
@@ -103,10 +103,7 @@ public class FileServiceImpl implements FileService {
             }
         } catch (IOException e) {
             logger.error(MsgConst.ERROR_WHILE_READING_FILE + e.getMessage());
-            response = ServiceResponse.getNotSuccessStatus();
-            response.setResponseMsg(MsgConst.ERROR_WHILE_READING_FILE);
         }
-        return response;
     }
 
 }

@@ -32,7 +32,7 @@ public class FileServiceTest {
     }
 
     @Test
-    public void uploadFileTest() throws IOException {
+    public void uploadFileTest() throws IOException, InterruptedException {
         ServiceResponse response = fileServiceImpl.uploadFile(null);
         Assert.assertEquals(MsgConst.VALIDATION_FILE_IS_EMPTY, response.getResponseMsg());
         Assert.assertEquals(ResponseStatusEnum.CLIENT_ERROR, response.getStatus());
@@ -47,7 +47,9 @@ public class FileServiceTest {
         Assert.assertEquals("", response.getResponseMsg());
         Assert.assertEquals(ResponseStatusEnum.COMPLETED_SUCCESS, response.getStatus());
         Assert.assertEquals(ResponseStatusEnum.COMPLETED_SUCCESS.getStatusCode(), response.getStatusCode());
-
+        synchronized (UploadFiles.getInstance()) {
+            UploadFiles.getInstance().wait(2000);
+        }
         Assert.assertNotNull(UploadFiles.getInstance());
         int numberOfFile = 1;
         Assert.assertEquals(numberOfFile, UploadFiles.getInstance().getNumberOfFiles());
