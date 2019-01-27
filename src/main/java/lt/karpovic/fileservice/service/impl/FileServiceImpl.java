@@ -33,8 +33,7 @@ public class FileServiceImpl implements FileService {
         String validation = Validator.validateInputFile(file);
         if (validation.isEmpty()) {
             UploadFiles.getInstance().addFileNameToList(file.getOriginalFilename());
-            Executor executor = Executors.newSingleThreadExecutor();
-            executor.execute(() -> processUploadedFile(file));
+            processUploadedFile(file);
         } else {
             response = ServiceResponse.getNotSuccessStatus();
             response.setResponseMsg(validation);
@@ -150,17 +149,24 @@ public class FileServiceImpl implements FileService {
 
 
     private void processUploadedFile(MultipartFile file) {
-        try (Scanner sc = new Scanner(file.getInputStream(), AppConfig.FILE_ENCODING)) {
-            while (sc.hasNextLine()) {
-                String line = sc.nextLine();
-                for (String word : line.split(AppConfig.REG_EX_FOR_SPLITTING_WORDS)) {
-                    String w = word.replaceAll(AppConfig.REG_EX_FOR_LEAVE_ONLY_LETTERS, AppConfig.SYMBOL_FOR_REPLACING_NOT_LETTERS).toLowerCase();
-                    UploadFiles.getInstance().processWord(w);
-                }
-            }
+        try {
+            Scanner sc = new Scanner(file.getInputStream(), AppConfig.FILE_ENCODING);
+            Executor executor = Executors.newSingleThreadExecutor();
+            executor.execute(() -> processFile(sc));
         } catch (IOException e) {
             logger.error(MsgConst.ERROR_WHILE_READING_FILE + e.getMessage());
         }
+    }
+
+    private void processFile(Scanner sc) {
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine();
+            for (String word : line.split(AppConfig.REG_EX_FOR_SPLITTING_WORDS)) {
+                String w = word.replaceAll(AppConfig.REG_EX_FOR_LEAVE_ONLY_LETTERS, AppConfig.SYMBOL_FOR_REPLACING_NOT_LETTERS).toLowerCase();
+                UploadFiles.getInstance().processWord(w);
+            }
+        }
+        sc.close();
     }
 
 }
